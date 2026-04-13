@@ -22,7 +22,6 @@ namespace TicketManagement.Repositories
             return rows > 0;
         }
 
-        // Método adicional para validación de credenciales
         public async Task<Admin?> LoginAsync(string usuario, string password)
         {
             using var db = CreateConnection();

@@ -22,11 +22,9 @@ namespace TicketManagement.Repositories
         }
         public TicketRepository(IConfiguration config) : base(config) { }
 
-        // READ: Obtener todos los tickets (o uno solo si se pasa el ID)
         public async Task<IEnumerable<Ticket>> GetAllAsync(int? idTicket = 0)
         {
             using var db = CreateConnection();
-            // El SP sp_ObtenerTickets ya maneja el parámetro opcional @idTicket
             return await db.QueryAsync<Ticket>(
                 "sp_ObtenerTickets",
                 new { idTicket = idTicket },
@@ -34,7 +32,6 @@ namespace TicketManagement.Repositories
             );
         }
 
-        // CREATE: Insertar un nuevo ticket
         public async Task<int> CreateAsync(Ticket t)
         {
             using var db = CreateConnection();
@@ -50,8 +47,7 @@ namespace TicketManagement.Repositories
             p.Add("@celular", t.Celular);
             p.Add("@correo", t.Correo);
             p.Add("@idNivel", t.IdNivel);
-            p.Add("@idAsunto", (object)t.IdAsunto ?? DBNull.Value); // Manejo de nulo
-            //p.Add("@resuelto", 0);
+            p.Add("@idAsunto", (object)t.IdAsunto ?? DBNull.Value);
 
             var numTurnoGenerado = await db.ExecuteScalarAsync<int>(
                 "sp_InsertarTicket",
@@ -61,7 +57,6 @@ namespace TicketManagement.Repositories
             return numTurnoGenerado;
         }
 
-        // UPDATE: Actualizar datos de un ticket existente
         public async Task<bool> UpdateAsync(Ticket t)
         {
             using var db = CreateConnection();
@@ -89,7 +84,6 @@ namespace TicketManagement.Repositories
             return rows > 0 || rows == -1;
         }
 
-        // DELETE: Eliminar un ticket
         public async Task<bool> DeleteAsync(int id)
         {
             using var db = CreateConnection();

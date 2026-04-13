@@ -12,11 +12,9 @@ namespace TicketManagement.Controllers
 
         public TicketsController(TicketRepository repo) => _repo = repo;
 
-        // GET: api/tickets
         [HttpGet]
         public async Task<IActionResult> GetAll() => Ok(await _repo.GetAllAsync());
 
-        // GET: api/tickets/5
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -24,7 +22,6 @@ namespace TicketManagement.Controllers
             return ticket != null ? Ok(ticket) : NotFound();
         }
 
-        // POST: api/tickets
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Ticket ticket)
         {
@@ -36,7 +33,6 @@ namespace TicketManagement.Controllers
                 : StatusCode(500, "Error al crear ticket");
         }
 
-        // PUT: api/tickets
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] Ticket ticket)
         {
@@ -44,7 +40,6 @@ namespace TicketManagement.Controllers
             return success ? Ok(new { mensaje = "Ticket actualizado" }) : NotFound();
         }
 
-        // DELETE: api/tickets/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -19,7 +19,6 @@ namespace TicketManagement.Controllers
             _asuRepo = asuRepo;
         }
 
-        // --- SECCIÓN MUNICIPIOS ---
         [HttpGet("municipios")]
         public async Task<IActionResult> GetMunicipios() => Ok(await _munRepo.GetAllAsync());
 
@@ -31,7 +30,6 @@ namespace TicketManagement.Controllers
         public async Task<IActionResult> DeleteMunicipio(int id) =>
             await _munRepo.DeleteAsync(id) ? Ok("Municipio eliminado") : NotFound();
 
-        // --- SECCIÓN NIVELES ---
         [HttpGet("niveles")]
         public async Task<IActionResult> GetNiveles() => Ok(await _nivRepo.GetAllAsync());
 
@@ -47,7 +45,6 @@ namespace TicketManagement.Controllers
         public async Task<IActionResult> DeleteNivel(int id) =>
             await _nivRepo.DeleteAsync(id) ? Ok("Nivel eliminado") : NotFound();
 
-        // --- SECCIÓN ASUNTOS ---
         [HttpGet("asuntos")]
         public async Task<IActionResult> GetAsuntos() => Ok(await _asuRepo.GetAllAsync());
 

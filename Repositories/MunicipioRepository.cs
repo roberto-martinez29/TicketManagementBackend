@@ -8,7 +8,6 @@ namespace TicketManagement.Repositories
     {
         public MunicipioRepository(IConfiguration config) : base(config) { }
 
-        // READ: Obtener todos los municipios
         public async Task<IEnumerable<Municipio>> GetAllAsync()
         {
             using var db = CreateConnection();
@@ -18,7 +17,6 @@ namespace TicketManagement.Repositories
             );
         }
 
-        // READ: Obtener un municipio por ID
         public async Task<Municipio?> GetByIdAsync(int id)
         {
             using var db = CreateConnection();
@@ -29,7 +27,6 @@ namespace TicketManagement.Repositories
             );
         }
 
-        // CREATE: Insertar nuevo municipio
         public async Task<bool> CreateAsync(Municipio municipio)
         {
             using var db = CreateConnection();
@@ -41,7 +38,6 @@ namespace TicketManagement.Repositories
             return rows > 0;
         }
 
-        // UPDATE: Actualizar municipio existente
         public async Task<bool> UpdateAsync(Municipio municipio)
         {
             using var db = CreateConnection();
@@ -57,7 +53,6 @@ namespace TicketManagement.Repositories
             return rows > 0;
         }
 
-        // DELETE: Eliminar municipio
         public async Task<bool> DeleteAsync(int id)
         {
             using var db = CreateConnection();
