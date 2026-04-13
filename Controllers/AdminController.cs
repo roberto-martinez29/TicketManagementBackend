@@ -20,8 +20,8 @@ namespace TicketManagement.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] Admin login)
         {
-            var user = await _repo.LoginAsync(login.Usuario, login.Contraseña);
-            if (user == null) return Unauthorized("Usuario o contraseña incorrectos");
+            var user = await _repo.LoginAsync(login.Usuario, login.Contrasena);
+            if (user == null) return Unauthorized("Usuario o Contrasena incorrectos");
 
             return Ok(new { user.IdAdmin, user.Usuario, Mensaje = "Acceso concedido" });
         }

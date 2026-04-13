@@ -49,5 +49,16 @@ namespace TicketManagement.Controllers
             var success = await _repo.DeleteAsync(id);
             return success ? Ok(new { mensaje = "Ticket eliminado" }) : NotFound();
         }
+
+        [HttpGet("buscar")]
+        public async Task<IActionResult> BuscarTicket([FromQuery] int numTurno, [FromQuery] string curp, [FromQuery] int idMunicipio)
+        {
+            var ticket = await _repo.GetByFiltersAsync(numTurno, curp, idMunicipio);
+
+            if (ticket == null)
+                return NotFound(new { mensaje = "No se encontró un ticket con esos datos" });
+
+            return Ok(ticket);
+        }
     }
 }

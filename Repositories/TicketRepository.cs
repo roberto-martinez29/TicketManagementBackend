@@ -6,10 +6,24 @@ namespace TicketManagement.Repositories
 {
     public class TicketRepository : BaseRepository
     {
+        public async Task<Ticket?> GetByFiltersAsync(int numTurno, string curp, int idMunicipio)
+        {
+            using var db = CreateConnection();
+            var p = new DynamicParameters();
+            p.Add("@numTurno", numTurno);
+            p.Add("@curp", curp);
+            p.Add("@idMunicipio", idMunicipio);
+            
+            return await db.QueryFirstOrDefaultAsync<Ticket>(
+                "sp_LoginUsuario",
+                p,
+                commandType: CommandType.StoredProcedure
+            );
+        }
         public TicketRepository(IConfiguration config) : base(config) { }
 
         // READ: Obtener todos los tickets (o uno solo si se pasa el ID)
-        public async Task<IEnumerable<Ticket>> GetAllAsync(int? idTicket = null)
+        public async Task<IEnumerable<Ticket>> GetAllAsync(int? idTicket = 0)
         {
             using var db = CreateConnection();
             // El SP sp_ObtenerTickets ya maneja el parámetro opcional @idTicket
@@ -37,6 +51,7 @@ namespace TicketManagement.Repositories
             p.Add("@correo", t.Correo);
             p.Add("@idNivel", t.IdNivel);
             p.Add("@idAsunto", (object)t.IdAsunto ?? DBNull.Value); // Manejo de nulo
+            p.Add("@resuelto", 0);
 
             var rows = await db.ExecuteAsync(
                 "sp_InsertarTicket",
@@ -64,6 +79,7 @@ namespace TicketManagement.Repositories
             p.Add("@correo", t.Correo);
             p.Add("@idNivel", t.IdNivel);
             p.Add("@idAsunto", (object)t.IdAsunto ?? DBNull.Value);
+            p.Add("@resuelto", (object)t.Resuelto ?? DBNull.Value);
 
             var rows = await db.ExecuteAsync(
                 "sp_ActualizarTicket",

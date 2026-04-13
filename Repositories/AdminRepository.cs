@@ -17,7 +17,7 @@ namespace TicketManagement.Repositories
         public async Task<bool> CreateAsync(Admin admin)
         {
             using var db = CreateConnection();
-            var p = new { usuario = admin.Usuario, contrasena = admin.Contraseña };
+            var p = new { usuario = admin.Usuario, contrasena = admin.Contrasena };
             var rows = await db.ExecuteAsync("sp_InsertarAdmin", p, commandType: CommandType.StoredProcedure);
             return rows > 0;
         }
@@ -26,7 +26,7 @@ namespace TicketManagement.Repositories
         public async Task<Admin?> LoginAsync(string usuario, string password)
         {
             using var db = CreateConnection();
-            var sql = "SELECT * FROM [Admin] WHERE usuario = @usuario AND contraseña = @password";
+            var sql = "SELECT * FROM [Admin] WHERE usuario = @usuario AND Contrasena = @password";
             return await db.QueryFirstOrDefaultAsync<Admin>(sql, new { usuario, password });
         }
     }

@@ -15,5 +15,6 @@
         public string Correo { get; set; } = string.Empty;
         public int IdNivel { get; set; }
         public int IdAsunto { get; set; }
+        public int Resuelto { get; set; }
     }
 }
