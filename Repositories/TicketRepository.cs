@@ -35,7 +35,7 @@ namespace TicketManagement.Repositories
         }
 
         // CREATE: Insertar un nuevo ticket
-        public async Task<bool> CreateAsync(Ticket t)
+        public async Task<int> CreateAsync(Ticket t)
         {
             using var db = CreateConnection();
             var p = new DynamicParameters();
@@ -51,14 +51,14 @@ namespace TicketManagement.Repositories
             p.Add("@correo", t.Correo);
             p.Add("@idNivel", t.IdNivel);
             p.Add("@idAsunto", (object)t.IdAsunto ?? DBNull.Value); // Manejo de nulo
-            p.Add("@resuelto", 0);
+            //p.Add("@resuelto", 0);
 
-            var rows = await db.ExecuteAsync(
+            var numTurnoGenerado = await db.ExecuteScalarAsync<int>(
                 "sp_InsertarTicket",
                 p,
                 commandType: CommandType.StoredProcedure
             );
-            return rows > 0;
+            return numTurnoGenerado;
         }
 
         // UPDATE: Actualizar datos de un ticket existente
@@ -86,7 +86,7 @@ namespace TicketManagement.Repositories
                 p,
                 commandType: CommandType.StoredProcedure
             );
-            return rows > 0;
+            return rows > 0 || rows == -1;
         }
 
         // DELETE: Eliminar un ticket
@@ -98,7 +98,7 @@ namespace TicketManagement.Repositories
                 new { idTicket = id },
                 commandType: CommandType.StoredProcedure
             );
-            return rows > 0;
+            return rows > 0 || rows == -1;
         }
     }
 }

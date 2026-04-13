@@ -30,8 +30,10 @@ namespace TicketManagement.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var success = await _repo.CreateAsync(ticket);
-            return success ? Ok(new { mensaje = "Ticket creado con éxito" }) : StatusCode(500, "Error al crear ticket");
+            var numTurno = await _repo.CreateAsync(ticket);
+            return numTurno > 0 
+                ? Ok(new { mensaje = "Ticket creado con éxito", numTurno }) 
+                : StatusCode(500, "Error al crear ticket");
         }
 
         // PUT: api/tickets
